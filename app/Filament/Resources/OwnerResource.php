@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -30,8 +31,24 @@ class OwnerResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->join('patients', 'owners.id', '=', 'patients.owner_id')
+                    ->join('treatments', 'patients.id', '=', 'treatments.patient_id')
+                    ->select(['*', 'owners.name as owner_name', 'patients.name as patient_name']);
+            })
             ->columns([
-                //
+                TextColumn::make('email')
+                    ->label('owner email'),
+                TextColumn::make('owner_name')
+                    ->label('owner name'),
+                TextColumn::make('phone')
+                    ->label('owner phone'),
+                TextColumn::make('date_of_birth')
+                    ->label('patients date_of_birth'),
+                TextColumn::make('patient_name')
+                    ->label('patients name'),
+                TextColumn::make('description')
+                    ->label('treatments description'),
             ])
             ->filters([
                 //
