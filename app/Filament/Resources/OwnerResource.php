@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use App\Filament\Resources\OwnerResource\Pages;
 use App\Filament\Resources\OwnerResource\Pages\CreateOwner;
 use App\Filament\Resources\OwnerResource\Pages\EditOwner;
@@ -10,13 +13,9 @@ use App\Filament\Resources\OwnerResource\RelationManagers;
 use App\Models\Owner;
 use App\Models\Patient;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,12 +28,12 @@ class OwnerResource extends Resource
 {
     protected static ?string $model = Owner::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 //
             ]);
     }
@@ -47,6 +46,17 @@ class OwnerResource extends Resource
                 $query->join('patients', 'owners.id', '=', 'patients.owner_id')
                     ->join('breeds', 'patients.breed_id', '=', 'breeds.id')
                     ->join('vaccines', 'patients.vaccine_id', '=', 'vaccines.id')
+                    // ->select([
+                    //         'owners.id',
+                    //         'owners.email',
+                    //         'owners.phone',
+                    //         'owners.owner_name',
+                    //         'patients.patient_name',
+                    //         'patients.type',
+                    //         'patients.registered_at',
+                    //         'breeds.breed_name',
+                    //         'vaccines.vaccine_name',
+                    // ])
                     ->where('patients.registered_at', $maxDate);
             })
             ->columns([
@@ -97,10 +107,10 @@ class OwnerResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -117,9 +127,9 @@ class OwnerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListOwners::route('/'),
-            'create' => Pages\CreateOwner::route('/create'),
-            'edit' => Pages\EditOwner::route('/{record}/edit'),
+            'index' => ListOwners::route('/'),
+            // 'create' => CreateOwner::route('/create'),
+            // 'edit' => EditOwner::route('/{record}/edit'),
         ];
     }
 }
