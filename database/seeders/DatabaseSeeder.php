@@ -40,17 +40,18 @@ class DatabaseSeeder extends Seeder
         $vaccines = Vaccine::all();
         $owners = Owner::all();
 
-        for ($j = 0; $j < $vaccines->count(); $j++) {
+        for ($j = 0; $j < $owners->count(); $j++) {
             Breed::factory()->create(
                 [
                     'breed_name' => $j + 1,
+                    'note' => $j + 1,
                 ]
             );
         }
 
         $breeds = Breed::all();
 
-        for ($l = 0; $l < $vaccines->count(); $l++) {
+        for ($l = 0; $l < $owners->count(); $l++) {
             for ($n = 0; $n < 10; $n++) {
                 Patient::factory()->create(
                     [

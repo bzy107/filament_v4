@@ -46,10 +46,27 @@ class OwnerResource extends Resource
                 $maxDate = Patient::max('registered_at');
                 $query->join('patients', 'owners.id', '=', 'patients.owner_id')
                     ->join('breeds', 'patients.breed_id', '=', 'breeds.id')
-                    // ->join('vaccines', 'patients.vaccine_id', '=', 'vaccines.id')
+                    ->join('vaccines', 'patients.vaccine_id', '=', 'vaccines.id')
                     ->where('patients.registered_at', $maxDate);
             })
             ->columns([
+                TextColumn::make('type'),
+                TextColumn::make('email'),
+                TextColumn::make('phone'),
+                TextColumn::make('owner_name'),
+                TextColumn::make('patient_name'),
+                TextColumn::make('patient_name'),
+                TextColumn::make('registered_at')
+                    ->label('registered_at')
+                    ->formatStateUsing(
+                        function ($record) {
+                            $date = Carbon::parse($record->registered_at);
+                            $date = $date->format('Y/m/d');
+
+                            return $date;
+                        }
+                    ),
+                TextColumn::make('breed_name'),
                 TextColumn::make('species')
                     ->sortable()
                     ->formatStateUsing(
@@ -70,35 +87,8 @@ class OwnerResource extends Resource
                             return $breeds . $record->breed_id;
                         }
                     ),
-                TextColumn::make('type'),
-                TextColumn::make('email'),
-                TextColumn::make('phone'),
-
-                // TextColumn::make('email')
-                //     ->label('owner email phone')
-                //     ->formatStateUsing(
-                //         function ($record) {
-                //             return "{$record->email} {$record->phone}";
-                //         }
-                //     ),
-                TextColumn::make('owner_name')
-                    ->label('owner name'),
-                TextColumn::make('patient_name')
-                    ->label('patients name'),
-                // TextColumn::make('vaccine_name')
-                //     ->label('vaccines name'),
-                TextColumn::make('breed_name')
-                    ->label('breeds name'),
-                TextColumn::make('registered_at')
-                    ->label('registered_at')
-                    ->formatStateUsing(
-                        function ($record) {
-                            $date = Carbon::parse($record->registered_at);
-                            $date = $date->format('Y/m/d');
-
-                            return $date;
-                        }
-                    ),
+                TextColumn::make('note'),
+                TextColumn::make('vaccine_name'),
             ])
             ->filters([
                 //

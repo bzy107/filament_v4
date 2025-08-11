@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('breed_name')->unique();
             $table->string('species'); // e.g.: 'Dog', 'Cat'
+            $table->string('note');
             $table->timestamps();
             $table->softDeletes();
         });
