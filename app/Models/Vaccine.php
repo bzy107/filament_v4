@@ -2,21 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\Patient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Owner extends Model
+class Vaccine extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
-        'email',
-        'owner_name',
-        'phone',
+        'vaccine_name',
+        'description',
+        'duration_in_months',
     ];
 
     public function patients(): HasMany

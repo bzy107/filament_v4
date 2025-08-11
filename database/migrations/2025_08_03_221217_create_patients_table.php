@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->date('date_of_birth');
-            $table->string('name');
-            $table->foreignId('owner_id')->constrained('owners')->cascadeOnDelete();
+            $table->date('registered_at');
+            $table->string('patient_name');
             $table->string('type');
+            $table->foreignId('owner_id')->constrained('owners')->cascadeOnDelete();
+            $table->foreignId('breed_id')->constrained('breeds')->cascadeOnDelete();
+            $table->foreignId('vaccine_id')->constrained('vaccines')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

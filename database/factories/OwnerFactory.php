@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,9 +17,11 @@ class OwnerFactory extends Factory
      */
     public function definition(): array
     {
+        $birthday = fake()->dateTimeBetween('1980-01-01', '2000-12-31');
+
         return [
             'email' => fake()->unique()->safeEmail(),
-            'name' => fake()->unique()->lastName(),
+            'owner_name' => fake()->unique()->lastName(),
             'phone' => fake()->phoneNumber(),
         ];
     }

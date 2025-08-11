@@ -14,10 +14,16 @@ class Patient extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'date_of_birth',
-        'name',
-        'owner_id',
+        'registered_at',
+        'patient_name',
         'type',
+        'owner_id',
+        'breed_id',
+        'vaccine_id',
+    ];
+
+    protected $casts = [
+        'registered_at' => 'date',
     ];
 
     public function owner(): BelongsTo
@@ -28,5 +34,15 @@ class Patient extends Model
     public function treatments(): HasMany
     {
         return $this->hasMany(Treatment::class);
+    }
+
+    public function breed(): BelongsTo
+    {
+        return $this->belongsTo(Breed::class);
+    }
+
+    public function vaccine(): BelongsTo
+    {
+        return $this->belongsTo(Vaccine::class);
     }
 }
