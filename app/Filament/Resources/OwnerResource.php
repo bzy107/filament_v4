@@ -3,16 +3,27 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\OwnerResource\Pages;
+use App\Filament\Resources\OwnerResource\Pages\CreateOwner;
+use App\Filament\Resources\OwnerResource\Pages\EditOwner;
+use App\Filament\Resources\OwnerResource\Pages\ListOwners;
 use App\Filament\Resources\OwnerResource\RelationManagers;
 use App\Models\Owner;
+use App\Models\Patient;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 
 class OwnerResource extends Resource
 {
@@ -32,33 +43,72 @@ class OwnerResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
+                $maxDate = Patient::max('registered_at');
                 $query->join('patients', 'owners.id', '=', 'patients.owner_id')
-                    ->join('treatments', 'patients.id', '=', 'treatments.patient_id')
-                    ->select(['*', 'owners.name as owner_name', 'patients.name as patient_name']);
+                    ->join('breeds', 'patients.breed_id', '=', 'breeds.id')
+                    // ->join('vaccines', 'patients.vaccine_id', '=', 'vaccines.id')
+                    ->where('patients.registered_at', $maxDate);
             })
             ->columns([
-                TextColumn::make('email')
-                    ->label('owner email'),
+                TextColumn::make('species')
+                    ->sortable()
+                    ->formatStateUsing(
+                        function ($record) {
+                            $breeds = '';
+                            if (preg_match('/Dog/', $record->species)) {
+                                $breeds = 'Dog ';
+                            }
+                            if (preg_match('/Rabbit/', $record->species)) {
+                                $breeds = 'Rabbit ';
+                            }
+                            if (preg_match('/Cat/', $record->species)) {
+                                $breeds = 'Cat ';
+                            }
+                            if (preg_match('/Bird/', $record->species)) {
+                                $breeds = 'Bird ';
+                            }
+                            return $breeds . $record->breed_id;
+                        }
+                    ),
+                TextColumn::make('type'),
+                TextColumn::make('email'),
+                TextColumn::make('phone'),
+
+                // TextColumn::make('email')
+                //     ->label('owner email phone')
+                //     ->formatStateUsing(
+                //         function ($record) {
+                //             return "{$record->email} {$record->phone}";
+                //         }
+                //     ),
                 TextColumn::make('owner_name')
                     ->label('owner name'),
-                TextColumn::make('phone')
-                    ->label('owner phone'),
-                TextColumn::make('date_of_birth')
-                    ->label('patients date_of_birth'),
                 TextColumn::make('patient_name')
                     ->label('patients name'),
-                TextColumn::make('description')
-                    ->label('treatments description'),
+                // TextColumn::make('vaccine_name')
+                //     ->label('vaccines name'),
+                TextColumn::make('breed_name')
+                    ->label('breeds name'),
+                TextColumn::make('registered_at')
+                    ->label('registered_at')
+                    ->formatStateUsing(
+                        function ($record) {
+                            $date = Carbon::parse($record->registered_at);
+                            $date = $date->format('Y/m/d');
+
+                            return $date;
+                        }
+                    ),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
