@@ -2,23 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\Patient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Owner extends Model
+class Breed extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
     // protected $fillable = [
-    //     // 'email',
-    //     // 'owner_name',
-    //     // 'phone',
-    //     'link_id',
-    //     'last_name',
+    //     'breed_name',
+    //     'species',
     // ];
 
     // public function patients(): HasMany
@@ -27,17 +23,10 @@ class Owner extends Model
     // }
 
     protected $fillable = [
-        'link_id',
-        'last_name',
-        'first_name',
-        'last_name_kana',
-        'first_name_kana',
-        'real_name',
-        'birthday',
-        'country',
-        'place_of_birth',
-        'is_retired',
-        'image_url',
+        // 'status_id',
+        // 'banzuke_id',
+        'rank_name',
+        'direction',
     ];
 
     public function patients(): HasMany

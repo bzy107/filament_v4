@@ -13,11 +13,48 @@ class Patient extends Model
     use HasFactory;
     use SoftDeletes;
 
+    // protected $fillable = [
+    //     'registered_at',
+    //     'patient_name',
+    //     'type',
+    //     'owner_id',
+    //     'breed_id',
+    //     'vaccine_id',
+    // ];
+
+    // protected $casts = [
+    //     'registered_at' => 'date',
+    // ];
+
+    // public function owner(): BelongsTo
+    // {
+    //     return $this->belongsTo(Owner::class);
+    // }
+
+    // public function treatments(): HasMany
+    // {
+    //     return $this->hasMany(Treatment::class);
+    // }
+
+    // public function breed(): BelongsTo
+    // {
+    //     return $this->belongsTo(Breed::class);
+    // }
+
+    // public function vaccine(): BelongsTo
+    // {
+    //     return $this->belongsTo(Vaccine::class);
+    // }
+
+
     protected $fillable = [
-        'date_of_birth',
-        'name',
         'owner_id',
-        'type',
+        'breed_id',
+        'vaccine_id',
+        'name_history',
+        'height',
+        'weight',
+        'information_date',
     ];
 
     public function owner(): BelongsTo
@@ -25,8 +62,13 @@ class Patient extends Model
         return $this->belongsTo(Owner::class);
     }
 
-    public function treatments(): HasMany
+    public function vaccine(): BelongsTo
     {
-        return $this->hasMany(Treatment::class);
+        return $this->belongsTo(Vaccine::class);
+    }
+
+    public function breed(): BelongsTo
+    {
+        return $this->belongsTo(Breed::class);
     }
 }
