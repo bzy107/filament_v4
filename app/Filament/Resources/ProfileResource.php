@@ -50,20 +50,19 @@ class ProfileResource extends Resource
                 }
             )
             ->columns([
-                TextColumn::make('rank_name')
-                    ->label('番付')
-                    ->sortable()
-                    ->searchable()
-                    ->formatStateUsing(
-                        function ($record) {
-                            $direction = $record->direction === 'east' ? '東方' : '西方';
+                // TextColumn::make('rank_name')
+                //     ->label('番付')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->formatStateUsing(
+                //         function ($record) {
+                //             $direction = $record->direction === 'east' ? '東方' : '西方';
 
-                            return "{$direction} {$record->rank_name}";
-                        }
-                    ),
+                //             return "{$direction} {$record->rank_name}";
+                //         }
+                //     ),
                 TextColumn::make('last_name')
                     ->label('四股名')
-                    // ->searchable(),
                     ->searchable()
                     ->formatStateUsing(
                         function ($record): HtmlString|string {
@@ -86,65 +85,64 @@ class ProfileResource extends Resource
                     ),
                 TextColumn::make('last_name_kana')
                     ->label('かな')
-                    // ->searchable(),
                     ->searchable()
                     ->formatStateUsing(
                         function ($record): string {
                             return "{$record->last_name_kana} {$record->first_name_kana}";
                         }
                     ),
+                TextColumn::make('real_name')
+                    ->label('本名')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('room_name')
                     ->label('部屋')
                     ->searchable(),
-                TextColumn::make('real_name')
-                    ->label('本名')
-                    ->searchable(),
-                TextColumn::make('birthday')
-                    ->label('生年月日')
-                    ->sortable()
-                    ->formatStateUsing(
-                        function ($record) {
-                            $date = Carbon::parse($record->birthday);
-                            $birth = $date->format('Y/m/d');
+                // TextColumn::make('birthday')
+                //     ->label('生年月日')
+                //     ->sortable()
+                //     ->formatStateUsing(
+                //         function ($record) {
+                //             $date = Carbon::parse($record->birthday);
+                //             $birth = $date->format('Y/m/d');
 
-                            return "{$birth} ({$date->age})";
-                        }
-                    ),
-                TextColumn::make('country')
-                    ->label('出身地')
-                    // ->searchable(),
-                    ->searchable()
-                    ->formatStateUsing(
-                        function ($record) {
-                            if ($record->country === '日本') {
-                                return $record->place_of_birth;
-                            }
+                //             return "{$birth} ({$date->age})";
+                //         }
+                //     ),
+                // TextColumn::make('country')
+                //     ->label('出身地')
+                //     ->searchable()
+                //     ->formatStateUsing(
+                //         function ($record) {
+                //             if ($record->country === '日本') {
+                //                 return $record->place_of_birth;
+                //             }
 
-                            return "{$record->country} {$record->place_of_birth}";
-                        }
-                    ),
-                TextColumn::make('height')
-                    ->label('身長')
-                    ->sortable(
-                        'height',
-                        function (Builder $query, string $direction) {
-                            return $query->orderByRaw('CAST(height as DECIMAL(4, 1)) ' . $direction)
-                                ->orderBy('ranks.status_id', 'asc');
-                        }
-                    ),
-                TextColumn::make('weight')
-                    ->label('体重')
-                    ->sortable(
-                        'weight',
-                        function (Builder $query, string $direction) {
-                            return $query->orderByRaw('CAST(weight as DECIMAL(4, 1)) ' . $direction)
-                                ->orderBy('ranks.status_id', 'asc');
-                        }
-                    ),
-                TextColumn::make('information_date')
-                    ->label('場所')
-                    ->date('Y/m')
-                    ->searchable(),
+                //             return "{$record->country} {$record->place_of_birth}";
+                //         }
+                //     ),
+                // TextColumn::make('height')
+                //     ->label('身長')
+                //     ->sortable(
+                //         'height',
+                //         function (Builder $query, string $direction) {
+                //             return $query->orderByRaw('CAST(height as DECIMAL(4, 1)) ' . $direction)
+                //                 ->orderBy('ranks.status_id', 'asc');
+                //         }
+                //     ),
+                // TextColumn::make('weight')
+                //     ->label('体重')
+                //     ->sortable(
+                //         'weight',
+                //         function (Builder $query, string $direction) {
+                //             return $query->orderByRaw('CAST(weight as DECIMAL(4, 1)) ' . $direction)
+                //                 ->orderBy('ranks.status_id', 'asc');
+                //         }
+                //     ),
+                // TextColumn::make('information_date')
+                //     ->label('場所')
+                //     ->date('Y/m')
+                //     ->searchable(),
             ])
             ->defaultSort(
                 fn (Builder $query) => $query->orderBy('ranks.status_id', 'asc')
@@ -174,8 +172,8 @@ class ProfileResource extends Resource
     {
         return [
             'index' => ListProfiles::route('/'),
-            'create' => CreateProfile::route('/create'),
-            'edit' => EditProfile::route('/{record}/edit'),
+            // 'create' => CreateProfile::route('/create'),
+            // 'edit' => EditProfile::route('/{record}/edit'),
         ];
     }
 }
