@@ -57,7 +57,9 @@ class DatabaseSeeder extends Seeder
                         'patient_name' => $l + 1,
                         'owner_id' => $owners->get($l)->id,
                         'breed_id' => $breeds->get($l)->id,
-                        'vaccine_id' => $vaccines->get($l)->id,
+                        'vaccine_id' => $l < 4 
+                            ? $vaccines->get(1)->id
+                            : $vaccines->get($l)->id,
                         'type' => $breeds->get($l)->species,
                         'registered_at' => Carbon::now()->subDays($n)->toDateString(),
                     ]
