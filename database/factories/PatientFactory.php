@@ -2,11 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\AffiliationRoom;
 use App\Models\Breed;
 use App\Models\Owner;
-use App\Models\Profile;
-use App\Models\Rank;
 use App\Models\Vaccine;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

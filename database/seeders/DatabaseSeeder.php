@@ -6,8 +6,6 @@ use App\Models\Breed;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Owner;
 use App\Models\Patient;
-use App\Models\Rank;
-use App\Models\Treatment;
 use App\Models\Vaccine;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -31,7 +29,7 @@ class DatabaseSeeder extends Seeder
             Owner::factory()->create(
                 [
                     'owner_name' => $i + 1,
-                    'email' => $i + 1 . '@test.com',
+                    'email' => $i + 1 .'@test.com',
                     'phone' => str_pad($i + 1, 11, '0', STR_PAD_LEFT),
                 ]
             );
@@ -58,7 +56,7 @@ class DatabaseSeeder extends Seeder
                         'patient_name' => $l + 1,
                         'owner_id' => $owners->get($l)->id,
                         'breed_id' => $breeds->get($l)->id,
-                        'vaccine_id' => $l < 4 
+                        'vaccine_id' => $l < 4
                             ? $vaccines->get(1)->id
                             : $vaccines->get($l)->id,
                         'type' => $breeds->get($l)->species,

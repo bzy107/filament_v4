@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\OwnerResource\Pages;
 
-use Filament\Actions\CreateAction;
 use App\Filament\Resources\OwnerResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListOwners extends ListRecords

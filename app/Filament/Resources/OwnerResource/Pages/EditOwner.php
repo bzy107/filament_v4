@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\OwnerResource\Pages;
 
-use Filament\Actions\DeleteAction;
 use App\Filament\Resources\OwnerResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditOwner extends EditRecord
