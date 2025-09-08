@@ -53,6 +53,7 @@ class OwnerResource extends Resource
                     ->where('patients.registered_at', $maxDate);
             })
             ->columns([
+                TextColumn::make('id'),
                 TextColumn::make('email')
                     ->label('owner email'),
                 TextColumn::make('phone')
